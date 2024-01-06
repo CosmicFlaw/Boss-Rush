@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://player controller demo sprite.png" type="Texture" id=1]
+[ext_resource path="res://Player.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 15, 15.75 )
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 15.0
+
+[node name="Player" type="KinematicBody2D"]
+position = Vector2( 500, 308 )
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 1, 0.627451, 0.627451, 1 )
+position = Vector2( 0, 33 )
+scale = Vector2( 1, 2 )
+texture = ExtResource( 1 )
+offset = Vector2( 0, -16 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -15 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 18 )
+shape = SubResource( 2 )
+
+[node name="Close To Edge Raycast1" type="RayCast2D" parent="."]
+position = Vector2( 0, -31 )
+cast_to = Vector2( 18, 0 )
+
+[node name="Close To Edge Raycast2" type="RayCast2D" parent="."]
+position = Vector2( 0, -36 )
+cast_to = Vector2( 18, 0 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+limit_left = 0
+limit_top = 0
+offset_v = -1.0
+
+[node name="Tween" type="Tween" parent="."]
