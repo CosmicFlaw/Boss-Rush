@@ -10,7 +10,7 @@ export var jump_force : int = 1200
 export var acceleration : int = 25
 export var jump_buffer_time : int  = 10
 export var cayote_time : int = 7
-export var friction: float = .4
+export var friction: float = .3
 
 var jump_buffer_counter : int = 0
 var cayote_counter : int = 0
@@ -32,14 +32,14 @@ func _physics_process(_delta):
 		if velocity.x >= 0:
 			velocity.x += acceleration
 		else:
-			velocity.x += acceleration - velocity.x/5;
+			velocity.x += acceleration - velocity.x/3;
 		$Sprite.flip_h = false
 
 	elif Input.is_action_pressed("ui_left"):
 		if velocity.x <= 0:
 			velocity.x -= acceleration
 		else:
-			velocity.x -= acceleration + velocity.x/5;
+			velocity.x -= acceleration + velocity.x/3;
 		$Sprite.flip_h = true
 
 	else:
@@ -55,12 +55,12 @@ func _physics_process(_delta):
 	
 	if jump_buffer_counter > 0 and cayote_counter > 0:
 		var tween = $Tween;
-		tween.interpolate_property($Sprite, "scale", Vector2(1.0, 2), Vector2(.5, 3), Squash_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT);
+		tween.interpolate_property($Sprite, "scale", Vector2(1.0, 1.0), Vector2(.5, 1.5), Squash_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT);
 		tween.start();
 		velocity.y = -jump_force;
 		jump_buffer_counter = 0;
 		cayote_counter = 0;
-		tween.interpolate_property($Sprite, "scale", Vector2(.5, 3), Vector2(1, 2), Squash_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT);
+		tween.interpolate_property($Sprite, "scale", Vector2(.5, 1.5), Vector2(1.0, 1.0), Squash_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT);
 		tween.start();
 	
 	if Input.is_action_just_released("Jump"):
