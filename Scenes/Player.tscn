@@ -16,12 +16,32 @@ script = ExtResource( 2 )
 texture = ExtResource( 1 )
 offset = Vector2( 0, -12 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="UpperCollision" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -18 )
 shape = SubResource( 1 )
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+[node name="LowerCollisionBox" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -6 )
+shape = SubResource( 1 )
+
+[node name="LowerCollisionCircle" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -6 )
 shape = SubResource( 2 )
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="Dash_Timer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="RightCast" type="RayCast2D" parent="."]
+position = Vector2( 3, -12 )
+enabled = true
+cast_to = Vector2( 3, 0 )
+
+[node name="LeftCast" type="RayCast2D" parent="."]
+position = Vector2( -3, -12 )
+enabled = true
+cast_to = Vector2( -3, 0 )
+
+[connection signal="timeout" from="Dash_Timer" to="." method="_on_Dash_Timer_timeout"]
