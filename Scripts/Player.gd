@@ -28,6 +28,11 @@ var moving : bool = false
 
 func _physics_process(_delta):
 	
+	if Global.PlayerHealth <= 0:
+		get_tree().reload_current_scene();
+	
+	$"../Label".text = str(Global.PlayerHealth);
+	
 	Adjust_Collision_Shapes();
 	
 	direction.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
