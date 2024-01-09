@@ -48,6 +48,7 @@ position = Vector2( 225, 476 )
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 512, 300 )
 current = true
+zoom = Vector2( 2, 2 )
 smoothing_enabled = true
 
 [node name="Boss" parent="." instance=ExtResource( 3 )]

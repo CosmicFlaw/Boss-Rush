@@ -12,7 +12,7 @@ class_name WhitePlayer
 
 
 
-const Squash_time : float = 0.4 
+const Squash_time : float = 0.2
 
 var velocity : Vector2
 var direction : Vector2
