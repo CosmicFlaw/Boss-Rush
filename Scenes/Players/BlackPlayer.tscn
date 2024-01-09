@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://ArtAssets/black-ninja-brother.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/PlayerScripts/BlackPlayer.gd" type="Script" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 9, 6 )
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 7.0
+
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 7.0
+height = 8.0
+
+[node name="BlackPlayer" type="KinematicBody2D"]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+offset = Vector2( 0, -12 )
+
+[node name="UpperCollision" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -18 )
+shape = SubResource( 1 )
+
+[node name="LowerCollisionBox" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -6 )
+shape = SubResource( 1 )
+
+[node name="LowerCollisionCircle" type="CollisionShape2D" parent="."]
+position = Vector2( 0, -7 )
+shape = SubResource( 2 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Dash_Timer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="RightCast" type="RayCast2D" parent="."]
+position = Vector2( 3, -12 )
+enabled = true
+cast_to = Vector2( 3, 0 )
+
+[node name="LeftCast" type="RayCast2D" parent="."]
+position = Vector2( -3, -12 )
+enabled = true
+cast_to = Vector2( -3, 0 )
+
+[node name="HurtBox" type="Area2D" parent="." groups=["PlayerHurtBox"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2( 0, -11 )
+shape = SubResource( 3 )
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]
