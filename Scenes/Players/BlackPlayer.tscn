@@ -1,19 +1,19 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://protagonistwhite.png" type="Texture" id=1]
-[ext_resource path="res://Scripts/Player.gd" type="Script" id=2]
+[ext_resource path="res://ArtAssets/black-ninja-brother.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/PlayerScripts/BlackPlayer.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 5.5, 6 )
+extents = Vector2( 9, 6 )
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 6.0
+radius = 7.0
 
 [sub_resource type="CapsuleShape2D" id=3]
-radius = 8.0
+radius = 7.0
 height = 8.0
 
-[node name="Player" type="KinematicBody2D"]
+[node name="BlackPlayer" type="KinematicBody2D"]
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -29,7 +29,7 @@ position = Vector2( 0, -6 )
 shape = SubResource( 1 )
 
 [node name="LowerCollisionCircle" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -6 )
+position = Vector2( 0, -7 )
 shape = SubResource( 2 )
 
 [node name="Tween" type="Tween" parent="."]
@@ -54,4 +54,4 @@ cast_to = Vector2( -3, 0 )
 position = Vector2( 0, -11 )
 shape = SubResource( 3 )
 
-[connection signal="timeout" from="Dash_Timer" to="." method="_on_Dash_Timer_timeout"]
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]

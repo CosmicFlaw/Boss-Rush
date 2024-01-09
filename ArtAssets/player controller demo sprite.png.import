@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Spotlight.jpg-1f4ca59058b8b117f9eb29a94a936396.stex"
+path="res://.import/player controller demo sprite.png-1654773e51ee1abae6a7690f589c53a8.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Spotlight.jpg"
-dest_files=[ "res://.import/Spotlight.jpg-1f4ca59058b8b117f9eb29a94a936396.stex" ]
+source_file="res://ArtAssets/player controller demo sprite.png"
+dest_files=[ "res://.import/player controller demo sprite.png-1654773e51ee1abae6a7690f589c53a8.stex" ]
 
 [params]
 

@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://player controller demo sprite.png" type="Texture" id=1]
-[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Scenes/Boss.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ArtAssets/player controller demo sprite.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/Players/WhitePlayer.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Enemies/Bosses/TestBoss.tscn" type="PackedScene" id=3]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 32, 0, 32, 32, 0, 32 )

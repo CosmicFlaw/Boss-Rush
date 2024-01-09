@@ -1,41 +1,42 @@
-# Samurai Showdown: Pixel Boss Rush
+# platformer-character-controller
+Made in Godot 3.5.1
 
-Welcome to Samurai Showdown, an exciting 2D pixel art game currently under development for a thrilling game jam experience! Get ready to immerse yourself in the world of samurais as you face off against formidable bosses in an epic showdown.
+Try in browser at: https://markolainen.itch.io/platformer-demo
 
-## Table of Contents
-1. [Introduction](#introduction)
-2. [Gameplay](#gameplay)
-3. [Features](#features)
-4. [Contributors](#contributors)
-5. [Feedback and Support](#feedback-and-support)
+Use as you like. Give credit if you feel like it.
 
-## Introduction
+Made for a game jam I did not complete. Tried making everything as modular as possible (not perfectly though). Most game parameters can be changed easily by changing the variable values.
 
-Samurai Showdown is a passion project developed for game jams, combining the precision of samurai combat with the nostalgia of 2D pixel art. Face challenging bosses, hone your skills, and emerge victorious in this fast-paced boss rush experience.
 
-## Gameplay
+Includes:
 
-- **Boss Rush:** Engage in intense one-on-one battles against powerful samurai bosses.
-- **Pixel Art:** Immerse yourself in the charming world of 2D pixel art, reminiscent of classic games.
-- **Dynamic Combat:** Master the art of samurai combat with precise controls and strategic moves.
-- **Progression:** Unlock new abilities and upgrades as you progress through the game.
+Dash, 2, 4 or 8 directional.
 
-## Features
+Double jump.
 
-- **Challenging Bosses:** Each boss presents a unique and formidable challenge, testing your skills and reflexes.
-- **Upgrade System:** Customize your samurai with a variety of upgrades to enhance your combat abilities.
-- **Pixel-perfect Design:** Enjoy the nostalgic charm of pixel art, meticulously crafted to bring the samurai world to life.
-- **Immersive Soundtrack:** Dive into the game with an immersive soundtrack that enhances the overall experience.
+Wall jump, with different behaviour if close to a ledge or not.
 
-## Contributors
+Corner correction, jump, dash and edge save.
 
-This project is currently being developed by a dedicated team of two contributors:
-- CosmicFlaw and DragonDev - Game Developer
-- ImpactComposition - Pixel Artist
+Coyote time (including wall jump).
 
-## Feedback and Support
+Dash init pause.
 
-We welcome any feedback or questions you may have. Feel free to open an issue on our [GitHub repository](#) for bug reports, feature requests, or general inquiries. Your input is invaluable as we continue to improve and polish Samurai Showdown. 
+Halved gravity jump peak.
 
-Thank you for your support, and we hope you enjoy playing Samurai Showdown as much as we enjoy creating it!
+Jump buffering (including wall jump).
 
+Wall latching pause.
+
+etc.
+
+
+Inspired by:
+
+Game Code Samurai's 2D engine found at https://www.youtube.com/watch?v=SxSLrhS6v-Q& .
+
+Maddy Thorson's Twitter post regarding philosophy and design of Celeste https://twitter.com/MaddyThorson/status/1238338574220546049 .
+
+Hollow Knight.
+
+Thanks to all the great Godot tutorials available!
