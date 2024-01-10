@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/protagonistwhite.png-a653c9af285ed8253b7a6493f4bd108e.stex"
+path="res://.import/protagonist_samurai.png-3b2b3a7db24db5277956a0c1ec8a9233.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ArtAssets/protagonistwhite.png"
-dest_files=[ "res://.import/protagonistwhite.png-a653c9af285ed8253b7a6493f4bd108e.stex" ]
+source_file="res://ArtAssets/protagonist_samurai.png"
+dest_files=[ "res://.import/protagonist_samurai.png-3b2b3a7db24db5277956a0c1ec8a9233.stex" ]
 
 [params]
 

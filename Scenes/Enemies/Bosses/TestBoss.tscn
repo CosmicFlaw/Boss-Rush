@@ -122,7 +122,7 @@ start_node = "Idle"
 [sub_resource type="AnimationNodeStateMachinePlayback" id=10]
 
 [sub_resource type="CircleShape2D" id=11]
-radius = 80.399
+radius = 48.0
 
 [sub_resource type="RectangleShape2D" id=12]
 extents = Vector2( 56, 48 )

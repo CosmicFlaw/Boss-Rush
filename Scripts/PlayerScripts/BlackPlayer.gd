@@ -5,14 +5,14 @@ class_name BlackPlayer
 
 #----------------------------------VARIABLES-----------------------------------#
 
+const Squash_time : float = 0.2
 
-
-
-const Squash_time : float = 0.4 
+var is_attacking : bool = false;
 
 var velocity : Vector2
 var direction : Vector2
 
+var projectile = preload("res://Scenes/PlayerProjectile.tscn");
 
 #------------Sideways Movement Var---------------#
 
@@ -35,44 +35,24 @@ var jumps_left : int = 0
 var is_jumping : bool = false
 var can_jump : bool = false
 
-
-
-
 #------------Dash Var-----------------#
 
 var is_dashing : bool = false
 var can_dash : bool = false
-export var dash_speed : int = 2000
-
-
-
+export var dash_speed : int = 1000
 
 
 
 onready var remote_transform = $RemoteTransform2D
 
 
-
-
-
-
-
-
-
-
-
 #----------------------------------READY FUNCTION-----------------------------#
 func _ready() -> void:
 	pass
 
-
-
-
-
-
 #--------------------------------PROCESS FUNCTION------------------------------#
 func _process(delta) -> void:
-	if Global.ActivePlayer == "white":
+	if Global.ActivePlayer == "White":
 		set_physics_process(false)
 	else:
 		set_physics_process(true)
@@ -80,41 +60,20 @@ func _process(delta) -> void:
 	Global.BlackPlayerPos = position
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #----------------------------PHYSICS PROCESS FUNCTION-------------------------#
 
 
 func _physics_process(_delta):
 	
-	if Global.PlayerHealth <= 0:
-		get_tree().reload_current_scene() 
-	
 	#We don't have a label for the health yet...
 	#$"../Label".text = str(Global.PlayerHealth) 
 	
-	Adjust_Collision_Shapes() 
+	if $Sprite.flip_h:
+		direction.x = -1;
+	else:
+		direction.x = 1;
 	
-	direction.x = Input.get_action_strength("right") - Input.get_action_strength("left")
+	Adjust_Collision_Shapes() 
 	
 	if is_on_floor():
 		jumps_left = 2 
@@ -125,12 +84,19 @@ func _physics_process(_delta):
 		if cayote_counter > 0:
 			cayote_counter -= 1
 		
-		if not OnWall():
+		if not OnWall() and not is_dashing:
 			velocity.y += gravity
-		if velocity.y > 4000:
-			velocity.y = 4000
+		if velocity.y > 1000:
+			velocity.y = 1000
 	
 	Move()
+	
+	# Apply the knockback
+	if Global.BlackHit:
+		velocity.x = Global.knock_back_dir * Global.knock_back_force * 10;
+		velocity.y = -jump_force/10
+		Global.BlackHit = false;
+		
 	
 	if OnRightWall():
 		if direction.x == 1:
@@ -165,34 +131,34 @@ func _physics_process(_delta):
 			$Dash_Timer.start() 
 			is_dashing = true 
 			can_dash = false 
+	
 	velocity = move_and_slide(velocity, Vector2.UP) 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
+	if Input.is_action_just_pressed("J"):
+		is_attacking = true;
+	elif Input.is_action_just_released("J"):
+		is_attacking = false;
+	
+	if is_attacking:
+		if direction.x > 0:
+			$RightHitBox/CollisionShape2D.disabled = false;
+			$LeftHitBox/CollisionShape2D.disabled = true;
+		elif direction.x < 0:
+			$LeftHitBox/CollisionShape2D.disabled = false;
+			$RightHitBox/CollisionShape2D.disabled = true;
+	else:
+		$LeftHitBox/CollisionShape2D.disabled = true;
+		$RightHitBox/CollisionShape2D.disabled = true;
+	
+	# Shoot the projectile
+	if Input.is_action_just_pressed("K"):
+		Global.instance_create(get_parent(), Vector2(global_position.x, global_position.y - 12), direction, projectile)
 
 
 #-----------------------------MOVEMENT FUNCTION--------------------------------#
 func Move():
 	if not is_dashing:
+		$HurtBox/CollisionShape2D.disabled = false;
 		velocity.x = clamp(velocity.x, -max_speed, max_speed)
 		if Input.is_action_pressed("right"):
 			moving = true
@@ -213,8 +179,9 @@ func Move():
 			velocity.x = lerp(velocity.x,0, friction)
 	else:
 		if direction.x != 0:
-			if not $Dash_Timer.is_stopped():
-				velocity.y = 0
+			velocity.y = 0
+			$DashTrail.emitting = true;
+			$HurtBox/CollisionShape2D.disabled = true;
 			velocity.x = direction.x * dash_speed
 
 func Jump():
@@ -259,12 +226,14 @@ func OnWall() -> bool:
 func _on_Dash_Timer_timeout():
 	is_dashing = false 
 
+# Hitting the enemy
 
+func _on_RightHitBox_area_entered(area):
+	if area.is_in_group("EnemyHurtBox"):
+		# go see the "take_damage()" function in the eye_minion script
+		area.get_parent().take_damage(Global.WhitePlayerMinDamage, Global.WhitePlayerMaxDamage, direction);
 
-
-
-func ConnectCamera(camera) -> void:
-	var CameraPath = camera.get_path()
-	remote_transform.remote_path = CameraPath
-
-
+func _on_LeftHitBox_area_entered(area):
+	if area.is_in_group("EnemyHurtBox"):
+		# go see the "take_damage()" function in the eye_minion script
+		area.get_parent().take_damage(Global.WhitePlayerMinDamage, Global.WhitePlayerMaxDamage, direction);
