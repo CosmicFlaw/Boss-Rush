@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://Scripts/Enemy Minions/Eye_Minion.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Enemy_Minions/Eye_Minion.gd" type="Script" id=1]
 [ext_resource path="res://ArtAssets/Eye-Enemy.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]

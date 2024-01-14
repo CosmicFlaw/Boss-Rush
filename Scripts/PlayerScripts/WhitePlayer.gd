@@ -10,8 +10,6 @@ class_name WhitePlayer
 #----------------------------------VARIABLES-----------------------------------#
 
 
-
-
 const Squash_time : float = 0.2
 
 var is_attacking : bool = false;
@@ -21,6 +19,13 @@ var direction : Vector2
 
 var projectile = preload("res://Scenes/PlayerProjectile.tscn");
 
+var TrampolineBoost: = 1500
+
+
+
+
+
+
 #------------Sideways Movement Var---------------#
 
 export var max_speed : int = 350
@@ -29,18 +34,30 @@ export var acceleration : int = 15
 export var friction: float = .3
 
 
+
+
+
+
+
+
 #------------Jump and Gravity Var----------------#
 
 export var jump_buffer_time : int  = 10
-export var cayote_time : int = 7
+export var coyote_time : int = 7
 export var gravity : float = 55
 var jump_buffer_counter : int = 0
-var cayote_counter : int = 0
+var coyote_counter : int = 0
 export var jump_force : int = 700
 var max_jumps : int = 2
 var jumps_left : int = 0
 var is_jumping : bool = false
 var can_jump : bool = false
+
+
+
+
+
+
 
 #------------Dash Var-----------------#
 
@@ -51,10 +68,23 @@ export var dash_speed : int = 1000
 onready var remote_transform = $RemoteTransform2D
 
 
+
+
+
+
 #------------------------------READY FUNCTION----------------------------------#
 
 func _ready() -> void:
 	pass
+
+
+
+
+
+
+
+
+
 
 #------------------------------PROCESS FUNCTION--------------------------------#
 func _process(delta) -> void:
@@ -67,6 +97,22 @@ func _process(delta) -> void:
 	
 	Global.WhitePlayerPos = global_position
 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #-------------------------------PHYSICS PROCESS--------------------------------#
@@ -86,10 +132,10 @@ func _physics_process(_delta):
 		jumps_left = 2;
 		is_jumping = false
 		can_dash = true
-		cayote_counter = cayote_time
+		coyote_counter = coyote_time
 	else:
-		if cayote_counter > 0:
-			cayote_counter -= 1
+		if coyote_counter > 0:
+			coyote_counter -= 1
 		
 		if not OnWall():
 			velocity.y += gravity
@@ -97,9 +143,10 @@ func _physics_process(_delta):
 			velocity.y = 1000
 	
 	Move() 
+	TrampolineCheck()
 	
 	if Global.WhiteHit:
-		velocity.x = Global.knock_back_dir * Global.knock_back_force * 10;
+		velocity.x = Global.knock_back_dir * Global.knock_back_force * 20;
 		Global.WhiteHit = false;
 	
 	if OnRightWall():
@@ -123,7 +170,7 @@ func _physics_process(_delta):
 	else:
 		can_jump = false;
 
-	if jump_buffer_counter > 0 and cayote_counter > 0:
+	if jump_buffer_counter > 0 and coyote_counter > 0:
 		Jump() 
 	
 	if Input.is_action_just_released("jump"):
@@ -138,9 +185,9 @@ func _physics_process(_delta):
 	
 	velocity = move_and_slide(velocity, Vector2.UP)
 	
-	if Input.is_action_just_pressed("J"):
+	if Input.is_action_just_pressed("attack_shoot"):
 		is_attacking = true;
-	elif Input.is_action_just_released("J"):
+	elif Input.is_action_just_released("attack_shoot"):
 		is_attacking = false;
 	
 	if is_attacking:
@@ -154,8 +201,25 @@ func _physics_process(_delta):
 		$LeftHitBox/CollisionShape2D.disabled = true;
 		$RightHitBox/CollisionShape2D.disabled = true;
 	
-	if Input.is_action_just_pressed("K"):
+	if Input.is_action_just_pressed("attack_shoot"):
 		Global.instance_create(get_parent(), Vector2(global_position.x, global_position.y - 12), direction, projectile);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #---------------------------MOVEMENT FUNCTION----------------------------------#
 
@@ -198,7 +262,7 @@ func Jump():
 		jumps_left -= 1;
 		velocity.y = -jump_force;
 		jump_buffer_counter = 0;
-		cayote_counter = 0;
+		coyote_counter = 0;
 		tween.interpolate_property($Sprite, "scale", Vector2(.5, 1.5), Vector2(1.0, 1.0), Squash_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT) 
 		tween.start() 
 
@@ -242,6 +306,26 @@ func OnWall() -> bool:
 		return true;
 	else:
 		return false;
+
+
+
+
+
+
+
+func TrampolineCheck() -> void:
+	if Global.OnTrampoline == "White":
+		velocity.y = -TrampolineBoost
+		if is_on_floor():
+			Global.OnTrampoline = "None"
+	else:
+		pass
+
+
+
+
+
+
 
 
 

@@ -7,12 +7,16 @@ class_name BlackPlayer
 
 const Squash_time : float = 0.2
 
-var is_attacking : bool = false;
+var is_attacking : bool = false
 
 var velocity : Vector2
 var direction : Vector2
 
-var projectile = preload("res://Scenes/PlayerProjectile.tscn");
+var projectile = preload("res://Scenes/PlayerProjectile.tscn")
+
+
+var TrampolineBoost: = 1500
+
 
 #------------Sideways Movement Var---------------#
 
@@ -25,10 +29,10 @@ export var friction: float = .3
 #------------Jump and Gravity Var----------------#
 
 export var jump_buffer_time : int  = 10
-export var cayote_time : int = 7
+export var coyote_time : int = 7
 export var gravity : float = 55
 var jump_buffer_counter : int = 0
-var cayote_counter : int = 0
+var coyote_counter : int = 0
 export var jump_force : int = 700
 var max_jumps : int = 2
 var jumps_left : int = 0
@@ -46,11 +50,41 @@ export var dash_speed : int = 1000
 onready var remote_transform = $RemoteTransform2D
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 #----------------------------------READY FUNCTION-----------------------------#
 func _ready() -> void:
 	pass
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #--------------------------------PROCESS FUNCTION------------------------------#
+
+#Turning the Phys Process off when character is not Global.Active_Player
 func _process(delta) -> void:
 	if Global.ActivePlayer == "White":
 		set_physics_process(false)
@@ -60,18 +94,40 @@ func _process(delta) -> void:
 	Global.BlackPlayerPos = position
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #----------------------------PHYSICS PROCESS FUNCTION-------------------------#
 
 
 func _physics_process(_delta):
 	
+	
+	
 	#We don't have a label for the health yet...
 	#$"../Label".text = str(Global.PlayerHealth) 
 	
-	if $Sprite.flip_h:
-		direction.x = -1;
+	if $AnimatedSprite.flip_h:
+		direction.x = -1
 	else:
-		direction.x = 1;
+		direction.x = 1
 	
 	Adjust_Collision_Shapes() 
 	
@@ -79,10 +135,10 @@ func _physics_process(_delta):
 		jumps_left = 2 
 		is_jumping = false
 		can_dash = true
-		cayote_counter = cayote_time
+		coyote_counter = coyote_time
 	else:
-		if cayote_counter > 0:
-			cayote_counter -= 1
+		if coyote_counter > 0:
+			coyote_counter -= 1
 		
 		if not OnWall() and not is_dashing:
 			velocity.y += gravity
@@ -90,12 +146,13 @@ func _physics_process(_delta):
 			velocity.y = 1000
 	
 	Move()
+	TrampolineCheck()
 	
 	# Apply the knockback
 	if Global.BlackHit:
-		velocity.x = Global.knock_back_dir * Global.knock_back_force * 10;
+		velocity.x = Global.knock_back_dir * Global.knock_back_force * 20
 		velocity.y = -jump_force/10
-		Global.BlackHit = false;
+		Global.BlackHit = false
 		
 	
 	if OnRightWall():
@@ -119,7 +176,7 @@ func _physics_process(_delta):
 	else:
 		can_jump = false 
 
-	if jump_buffer_counter > 0 and cayote_counter > 0:
+	if jump_buffer_counter > 0 and coyote_counter > 0:
 		Jump() 
 	
 	if Input.is_action_just_released("jump"):
@@ -134,68 +191,136 @@ func _physics_process(_delta):
 	
 	velocity = move_and_slide(velocity, Vector2.UP) 
 	
-	if Input.is_action_just_pressed("J"):
-		is_attacking = true;
-	elif Input.is_action_just_released("J"):
-		is_attacking = false;
+	if Input.is_action_just_pressed("attack_shoot"):
+		is_attacking = true
+	elif Input.is_action_just_released("attack_shoot"):
+		is_attacking = false
 	
 	if is_attacking:
 		if direction.x > 0:
-			$RightHitBox/CollisionShape2D.disabled = false;
-			$LeftHitBox/CollisionShape2D.disabled = true;
+			$RightHitBox/CollisionShape2D.disabled = false
+			$LeftHitBox/CollisionShape2D.disabled = true
 		elif direction.x < 0:
-			$LeftHitBox/CollisionShape2D.disabled = false;
-			$RightHitBox/CollisionShape2D.disabled = true;
+			$LeftHitBox/CollisionShape2D.disabled = false
+			$RightHitBox/CollisionShape2D.disabled = true
 	else:
-		$LeftHitBox/CollisionShape2D.disabled = true;
-		$RightHitBox/CollisionShape2D.disabled = true;
+		$LeftHitBox/CollisionShape2D.disabled = true
+		$RightHitBox/CollisionShape2D.disabled = true
 	
 	# Shoot the projectile
-	if Input.is_action_just_pressed("K"):
+	if Input.is_action_just_pressed("attack_shoot"):
 		Global.instance_create(get_parent(), Vector2(global_position.x, global_position.y - 12), direction, projectile)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #-----------------------------MOVEMENT FUNCTION--------------------------------#
 func Move():
 	if not is_dashing:
-		$HurtBox/CollisionShape2D.disabled = false;
+		$HurtBox/CollisionShape2D.disabled = false
 		velocity.x = clamp(velocity.x, -max_speed, max_speed)
+		
+		
 		if Input.is_action_pressed("right"):
 			moving = true
 			if velocity.x >= 0:
 				velocity.x += acceleration
 			else:
 				velocity.x += acceleration - velocity.x/3 
-			$Sprite.flip_h = false
+			$AnimatedSprite.flip_h = false
+			$AnimatedSprite.play("RUN-START")
+			if velocity.x == max_speed: 
+				$AnimatedSprite.animation("RUNNING")
+				
+			
+			
+			
+			
 		elif Input.is_action_pressed("left"):
 			moving = true
+			
 			if velocity.x <= 0:
 				velocity.x -= acceleration
+				
 			else:
 				velocity.x -= acceleration + velocity.x/3 
-			$Sprite.flip_h = true
+			$AnimatedSprite.flip_h = true
+			$AnimatedSprite.play("RUN-START")
+			if velocity.x == max_speed: 
+				$AnimatedSprite.animation("RUNNING")
+				
+			
+			
 		else:
 			moving = false
-			velocity.x = lerp(velocity.x,0, friction)
+			velocity.x = lerp(velocity.x, 0, friction)
+			$AnimatedSprite.play("RUN-STOP")
+			if velocity.x == 0:
+				$AnimatedSprite.play("IDLE")
+		
+		
 	else:
 		if direction.x != 0:
 			velocity.y = 0
-			$DashTrail.emitting = true;
-			$HurtBox/CollisionShape2D.disabled = true;
+			$DashTrail.emitting = true
+			$HurtBox/CollisionShape2D.disabled = true
 			velocity.x = direction.x * dash_speed
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 func Jump():
 	if can_jump:
 		is_jumping = true 
 		var tween = $Tween 
-		tween.interpolate_property($Sprite, "scale", Vector2(1.0, 1.0), Vector2(.5, 1.5), Squash_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT) 
+		tween.interpolate_property($AnimatedSprite, "scale", Vector2(1.0, 1.0), Vector2(.5, 1.5), Squash_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT) 
 		tween.start() 
 		jumps_left -= 1 
 		velocity.y = -jump_force 
 		jump_buffer_counter = 0 
-		cayote_counter = 0 
-		tween.interpolate_property($Sprite, "scale", Vector2(.5, 1.5), Vector2(1.0, 1.0), Squash_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT) 
+		coyote_counter = 0 
+		tween.interpolate_property($AnimatedSprite, "scale", Vector2(.5, 1.5), Vector2(1.0, 1.0), Squash_time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT) 
 		tween.start() 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 func Adjust_Collision_Shapes():
 	if moving:
@@ -204,6 +329,17 @@ func Adjust_Collision_Shapes():
 	else:
 		$LowerCollisionBox.disabled = false 
 		$LowerCollisionCircle.disabled = true 
+
+
+
+
+
+
+
+
+
+
+
 
 func OnLeftWall() -> bool:
 	if $LeftCast.is_colliding():
@@ -223,6 +359,35 @@ func OnWall() -> bool:
 	else:
 		return false 
 
+
+
+
+
+
+
+
+
+func TrampolineCheck() -> void:
+	if Global.OnTrampoline == "Black":
+		velocity.y = -TrampolineBoost 
+		if is_on_floor():
+			Global.OnTrampoline = "None"
+		
+	else:
+		pass
+
+
+
+
+
+
+
+
+
+
+
+
+
 func _on_Dash_Timer_timeout():
 	is_dashing = false 
 
@@ -231,9 +396,13 @@ func _on_Dash_Timer_timeout():
 func _on_RightHitBox_area_entered(area):
 	if area.is_in_group("EnemyHurtBox"):
 		# go see the "take_damage()" function in the eye_minion script
-		area.get_parent().take_damage(Global.WhitePlayerMinDamage, Global.WhitePlayerMaxDamage, direction);
+		area.get_parent().take_damage(Global.WhitePlayerMinDamage, Global.WhitePlayerMaxDamage, direction)
 
 func _on_LeftHitBox_area_entered(area):
 	if area.is_in_group("EnemyHurtBox"):
 		# go see the "take_damage()" function in the eye_minion script
-		area.get_parent().take_damage(Global.WhitePlayerMinDamage, Global.WhitePlayerMaxDamage, direction);
+		area.get_parent().take_damage(Global.WhitePlayerMinDamage, Global.WhitePlayerMaxDamage, direction)
+
+
+func _on_AnimatedSprite_animation_finished():
+	pass # Replace with function body.

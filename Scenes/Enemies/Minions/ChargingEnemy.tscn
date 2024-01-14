@@ -1,0 +1,68 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://ArtAssets/Charging Enemy.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Enemy_Minions/ChargingEnemy.gd" type="Script" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 24, 24 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ SubResource( 1 ) ],
+"loop": true,
+"name": "IDLE",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=3]
+height = 4.0
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 101.079
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 14.0
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.968627, 0.160784, 0.160784, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0, 0, 0, 0.513726 )
+
+[node name="ChargingEnemy" type="KinematicBody2D"]
+script = ExtResource( 2 )
+ChargeSpeed = 100
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 2 )
+animation = "IDLE"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 3 )
+
+[node name="PlayerDectector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDectector"]
+shape = SubResource( 4 )
+
+[node name="HitBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource( 5 )
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+margin_left = -10.0
+margin_top = -19.0
+margin_right = 10.0
+margin_bottom = -17.0
+rect_pivot_offset = Vector2( 10, 1 )
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 7 )
+step = 1.0
+value = 50.0
+percent_visible = false
+
+[connection signal="body_entered" from="PlayerDectector" to="." method="_on_PlayerDectector_body_entered"]
+[connection signal="body_exited" from="PlayerDectector" to="." method="_on_PlayerDectector_body_exited"]
+[connection signal="area_entered" from="HitBox" to="." method="_on_HitBox_area_entered"]
