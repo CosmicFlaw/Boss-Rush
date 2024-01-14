@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scripts/ExtraGameObjects/DialogBoard.gd" type="Script" id=1]
+[ext_resource path="res://ArtAssets/tileset_grass.png" type="Texture" id=2]
+[ext_resource path="res://sf-square-head/SF Square Head.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 25.4951
+
+[sub_resource type="DynamicFont" id=2]
+size = 12
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+extra_spacing_char = 2
+font_data = ExtResource( 3 )
+
+[node name="DialogBoard" type="Sprite"]
+position = Vector2( 0, -11 )
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 121, 98, 22, 22 )
+script = ExtResource( 1 )
+
+[node name="PlayerDetector" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
+shape = SubResource( 3 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = -48.0
+margin_top = -24.0
+margin_right = 140.0
+margin_bottom = -10.0
+rect_scale = Vector2( 0.525613, 0.85556 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "press X to interact"
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="body_entered" from="PlayerDetector" to="." method="_on_PlayerDetector_body_entered"]
+[connection signal="body_exited" from="PlayerDetector" to="." method="_on_PlayerDetector_body_exited"]
