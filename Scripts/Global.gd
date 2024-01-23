@@ -67,18 +67,15 @@ func PlayerSwitch() -> void:
 
 func HitPlayer(Player : String, MinDamage : float, MaxDamage : float, direction : int, KnockBack : float):
 	if Player=="White":
-		WhitePlayerHealth -= rand_range(MinDamage,MaxDamage)
-		WhiteHit = true
+		WhitePlayerHealth -= rand_range(MinDamage, MaxDamage)
+		WhiteHit = true;
 	elif Player=="Black":
-		BlackPlayerHealth -= rand_range(MinDamage,MaxDamage)
-		BlackHit = true
+		BlackPlayerHealth -= rand_range(MinDamage, MaxDamage)
+		BlackHit = true;
 	
 	# those variables are also used in the Player's script
 	knock_back_dir = direction
 	knock_back_force = KnockBack
-
-
-
 
 
 

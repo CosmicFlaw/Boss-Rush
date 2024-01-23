@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://ArtAssets/black-ninja-brother.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/PlayerScripts/BlackPlayer.gd" type="Script" id=2]
@@ -8,103 +8,74 @@
 offsets = PoolRealArray( 0.0110497, 1 )
 colors = PoolColorArray( 1, 1, 1, 0.911602, 1, 1, 1, 0 )
 
-[sub_resource type="AtlasTexture" id=27]
+[sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 3 )
 region = Rect2( 0, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=28]
-atlas = ExtResource( 3 )
-region = Rect2( 24, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=29]
-atlas = ExtResource( 3 )
-region = Rect2( 48, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=30]
-atlas = ExtResource( 3 )
-region = Rect2( 72, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=31]
-atlas = ExtResource( 3 )
-region = Rect2( 96, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=32]
-atlas = ExtResource( 3 )
-region = Rect2( 120, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=33]
+[sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 3 )
 region = Rect2( 264, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=34]
+[sub_resource type="AtlasTexture" id=14]
 atlas = ExtResource( 3 )
 region = Rect2( 288, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=35]
+[sub_resource type="AtlasTexture" id=15]
 atlas = ExtResource( 3 )
 region = Rect2( 312, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=36]
+[sub_resource type="AtlasTexture" id=16]
 atlas = ExtResource( 3 )
 region = Rect2( 336, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=37]
+[sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 3 )
 region = Rect2( 360, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=38]
-atlas = ExtResource( 3 )
-region = Rect2( 120, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=39]
+[sub_resource type="AtlasTexture" id=19]
 atlas = ExtResource( 3 )
 region = Rect2( 144, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=40]
+[sub_resource type="AtlasTexture" id=20]
 atlas = ExtResource( 3 )
 region = Rect2( 168, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=41]
+[sub_resource type="AtlasTexture" id=21]
 atlas = ExtResource( 3 )
 region = Rect2( 192, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=42]
+[sub_resource type="AtlasTexture" id=22]
 atlas = ExtResource( 3 )
 region = Rect2( 216, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=43]
+[sub_resource type="AtlasTexture" id=23]
 atlas = ExtResource( 3 )
 region = Rect2( 240, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=44]
+[sub_resource type="AtlasTexture" id=24]
 atlas = ExtResource( 3 )
 region = Rect2( 264, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=45]
+[sub_resource type="AtlasTexture" id=25]
 atlas = ExtResource( 3 )
 region = Rect2( 288, 0, 24, 24 )
 
 [sub_resource type="SpriteFrames" id=26]
 animations = [ {
-"frames": [ SubResource( 27 ) ],
+"frames": [ SubResource( 6 ) ],
 "loop": true,
 "name": "IDLE",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 28 ), SubResource( 29 ), SubResource( 30 ), SubResource( 31 ), SubResource( 32 ) ],
-"loop": false,
-"name": "RUN-START",
-"speed": 12.0
-}, {
-"frames": [ SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ) ],
+"frames": [ SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ) ],
 "loop": false,
 "name": "RUN-STOP",
 "speed": 12.0
 }, {
-"frames": [ SubResource( 38 ), SubResource( 39 ), SubResource( 40 ), SubResource( 41 ), SubResource( 42 ), SubResource( 43 ), SubResource( 44 ), SubResource( 45 ) ],
+"frames": [ SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ) ],
 "loop": true,
 "name": "RUNNING",
-"speed": 15.0
+"speed": 10.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -121,7 +92,7 @@ height = 8.0
 radius = 8.0
 height = 10.0
 
-[node name="BlackPlayer" type="KinematicBody2D" groups=["PlayerB"]]
+[node name="BlackPlayer" type="KinematicBody2D" groups=["Player", "PlayerB"]]
 collision_layer = 2
 collision_mask = 9
 script = ExtResource( 2 )
@@ -139,8 +110,7 @@ color_ramp = SubResource( 5 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 26 )
-animation = "RUNNING"
-frame = 1
+animation = "IDLE"
 offset = Vector2( 0, -12 )
 
 [node name="UpperCollision" type="CollisionShape2D" parent="."]
@@ -193,6 +163,10 @@ position = Vector2( -14, -11 )
 shape = SubResource( 4 )
 disabled = true
 
+[node name="Invincible_Timer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="timeout" from="Dash_Timer" to="." method="_on_Dash_Timer_timeout"]
 [connection signal="area_entered" from="RightHitBox" to="." method="_on_RightHitBox_area_entered"]
 [connection signal="area_entered" from="LeftHitBox" to="." method="_on_LeftHitBox_area_entered"]
+[connection signal="timeout" from="Invincible_Timer" to="." method="_on_Invincible_Timer_timeout"]
