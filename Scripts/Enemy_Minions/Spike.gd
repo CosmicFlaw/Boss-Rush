@@ -14,7 +14,7 @@ func _ready() -> void:
 func _on_HitBox_body_entered(body):
 	if Global.ActivePlayer == "White":
 		if body is WhitePlayer:
-			Global.HitPlayer("White", SpikeDamage, SpikeDamage, 0, 20.0)
+			Global.HitPlayer("White", SpikeDamage, SpikeDamage, WhitePlayerNode.direction.x, 20.0)
 	else:
 		if body is BlackPlayer:
-			Global.HitPlayer("Black", SpikeDamage, SpikeDamage, 0, 20.0)
+			Global.HitPlayer("Black", SpikeDamage, SpikeDamage, WhitePlayerNode.direction.x, 20.0)
