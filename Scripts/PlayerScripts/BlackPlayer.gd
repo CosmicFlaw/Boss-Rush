@@ -49,38 +49,9 @@ export var dash_speed : int = 1000
 
 onready var remote_transform = $RemoteTransform2D
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #----------------------------------READY FUNCTION-----------------------------#
 func _ready() -> void:
 	pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #--------------------------------PROCESS FUNCTION------------------------------#
 
@@ -93,36 +64,14 @@ func _process(delta) -> void:
 	
 	Global.BlackPlayerPos = position
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #----------------------------PHYSICS PROCESS FUNCTION-------------------------#
 
 
 func _physics_process(_delta):
 	
 	
-	
-	#We don't have a label for the health yet...
-	#$"../Label".text = str(Global.PlayerHealth) 
+	if moving:
+		$AnimatedSprite.play("RUNNING");
 	
 	if $AnimatedSprite.flip_h:
 		direction.x = -1
@@ -150,10 +99,13 @@ func _physics_process(_delta):
 	
 	# Apply the knockback
 	if Global.BlackHit:
+		$Invincible_Timer.start();
 		velocity.x = Global.knock_back_dir * Global.knock_back_force * 20
 		velocity.y = -jump_force/10
 		Global.BlackHit = false
-		
+	
+	if not $Invincible_Timer.is_stopped():
+		$HurtBox/CollisionShape2D.disabled = true
 	
 	if OnRightWall():
 		if direction.x == 1:
@@ -191,9 +143,9 @@ func _physics_process(_delta):
 	
 	velocity = move_and_slide(velocity, Vector2.UP) 
 	
-	if Input.is_action_just_pressed("attack_shoot"):
+	if Input.is_action_just_pressed("attack"):
 		is_attacking = true
-	elif Input.is_action_just_released("attack_shoot"):
+	elif Input.is_action_just_released("attack"):
 		is_attacking = false
 	
 	if is_attacking:
@@ -207,8 +159,10 @@ func _physics_process(_delta):
 		$LeftHitBox/CollisionShape2D.disabled = true
 		$RightHitBox/CollisionShape2D.disabled = true
 	
+	if Global.BlackPlayerHealth <= 0:
+		$HurtBox/CollisionShape2D.disabled = true
 	# Shoot the projectile
-	if Input.is_action_just_pressed("attack_shoot"):
+	if Input.is_action_just_pressed("shoot"):
 		Global.instance_create(get_parent(), Vector2(global_position.x, global_position.y - 12), direction, projectile)
 
 
@@ -243,9 +197,6 @@ func Move():
 			else:
 				velocity.x += acceleration - velocity.x/3 
 			$AnimatedSprite.flip_h = false
-			$AnimatedSprite.play("RUN-START")
-			if velocity.x == max_speed: 
-				$AnimatedSprite.animation("RUNNING")
 				
 			
 			
@@ -260,9 +211,6 @@ func Move():
 			else:
 				velocity.x -= acceleration + velocity.x/3 
 			$AnimatedSprite.flip_h = true
-			$AnimatedSprite.play("RUN-START")
-			if velocity.x == max_speed: 
-				$AnimatedSprite.animation("RUNNING")
 				
 			
 			
@@ -403,6 +351,5 @@ func _on_LeftHitBox_area_entered(area):
 		# go see the "take_damage()" function in the eye_minion script
 		area.get_parent().take_damage(Global.WhitePlayerMinDamage, Global.WhitePlayerMaxDamage, direction)
 
-
-func _on_AnimatedSprite_animation_finished():
-	pass # Replace with function body.
+func _on_Invincible_Timer_timeout():
+	$HurtBox/CollisionShape2D.disabled = false;

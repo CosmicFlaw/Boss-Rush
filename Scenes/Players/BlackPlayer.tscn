@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://ArtAssets/black-ninja-brother.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/PlayerScripts/BlackPlayer.gd" type="Script" id=2]
@@ -11,30 +11,6 @@ colors = PoolColorArray( 1, 1, 1, 0.911602, 1, 1, 1, 0 )
 [sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 3 )
 region = Rect2( 0, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 3 )
-region = Rect2( 24, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=8]
-atlas = ExtResource( 3 )
-region = Rect2( 48, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=9]
-atlas = ExtResource( 3 )
-region = Rect2( 72, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=10]
-atlas = ExtResource( 3 )
-region = Rect2( 96, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=11]
-atlas = ExtResource( 3 )
-region = Rect2( 120, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=12]
-atlas = ExtResource( 3 )
-region = Rect2( 144, 0, 24, 24 )
 
 [sub_resource type="AtlasTexture" id=13]
 atlas = ExtResource( 3 )
@@ -91,11 +67,6 @@ animations = [ {
 "name": "IDLE",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ) ],
-"loop": false,
-"name": "RUN-START",
-"speed": 12.0
-}, {
 "frames": [ SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ) ],
 "loop": false,
 "name": "RUN-STOP",
@@ -104,7 +75,7 @@ animations = [ {
 "frames": [ SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ) ],
 "loop": true,
 "name": "RUNNING",
-"speed": 15.0
+"speed": 10.0
 } ]
 
 [sub_resource type="RectangleShape2D" id=1]
@@ -121,7 +92,7 @@ height = 8.0
 radius = 8.0
 height = 10.0
 
-[node name="BlackPlayer" type="KinematicBody2D" groups=["PlayerB"]]
+[node name="BlackPlayer" type="KinematicBody2D" groups=["Player", "PlayerB"]]
 collision_layer = 2
 collision_mask = 9
 script = ExtResource( 2 )
@@ -139,8 +110,7 @@ color_ramp = SubResource( 5 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 26 )
-animation = "RUNNING"
-frame = 6
+animation = "IDLE"
 offset = Vector2( 0, -12 )
 
 [node name="UpperCollision" type="CollisionShape2D" parent="."]
@@ -193,6 +163,10 @@ position = Vector2( -14, -11 )
 shape = SubResource( 4 )
 disabled = true
 
+[node name="Invincible_Timer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="timeout" from="Dash_Timer" to="." method="_on_Dash_Timer_timeout"]
 [connection signal="area_entered" from="RightHitBox" to="." method="_on_RightHitBox_area_entered"]
 [connection signal="area_entered" from="LeftHitBox" to="." method="_on_LeftHitBox_area_entered"]
+[connection signal="timeout" from="Invincible_Timer" to="." method="_on_Invincible_Timer_timeout"]

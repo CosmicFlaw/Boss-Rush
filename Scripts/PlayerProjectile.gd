@@ -7,7 +7,10 @@ var dir = Vector2();
 
 func _physics_process(delta):
 	# move forward at the specified speed
-	global_position += dir * speed * delta
+	if dir != Vector2.ZERO:
+		global_position += dir * speed * delta
+	else:
+		queue_free();
 
 # Apply damage to the enemy if collided with it
 

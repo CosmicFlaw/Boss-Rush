@@ -21,7 +21,7 @@ height = 8.0
 radius = 8.0
 height = 10.0
 
-[node name="WhitePlayer" type="KinematicBody2D"]
+[node name="WhitePlayer" type="KinematicBody2D" groups=["Player"]]
 collision_layer = 2
 collision_mask = 9
 script = ExtResource( 1 )
@@ -89,6 +89,10 @@ shape = SubResource( 4 )
 position = Vector2( -14, -11 )
 shape = SubResource( 4 )
 
+[node name="Invincible_Timer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="timeout" from="Dash_Timer" to="." method="_on_Dash_Timer_timeout"]
 [connection signal="area_entered" from="RightHitBox" to="." method="_on_RightHitBox_area_entered"]
 [connection signal="area_entered" from="LeftHitBox" to="." method="_on_LeftHitBox_area_entered"]
+[connection signal="timeout" from="Invincible_Timer" to="." method="_on_Invincible_Timer_timeout"]
