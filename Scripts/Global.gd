@@ -81,10 +81,17 @@ func HitPlayer(Player : String, MinDamage : float, MaxDamage : float, direction 
 
 # a function to create an instance in the scene, usually used for projectiles.
 
-func instance_create(parent, position : Vector2, direction : Vector2, instance):
+func instance_shoot(parent, position : Vector2, direction : Vector2, instance):
 	var inst = instance.instance()
 	var pos = position
 	inst.global_position = position
 	inst.dir = direction
+	parent.add_child(inst)
+	return inst
+
+func instance_spawn(parent, position : Vector2, instance):
+	var inst = instance.instance()
+	var pos = position
+	inst.global_position = position
 	parent.add_child(inst)
 	return inst

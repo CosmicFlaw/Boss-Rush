@@ -18,9 +18,8 @@ func _physics_process(delta):
 		$Particles2D.position = cast_point
 		collider = get_collider();
 		if is_casting:
-			if collider is Area2D:
-				if collider.is_in_group("PlayerHurtBox"):
-					Global.HitPlayer("White", min_damage, max_damage, 1, 20);
+			if collider.is_in_group("Player"):
+				Global.HitPlayer("White", min_damage, max_damage, 1, 20);
 	else:
 		$Line2D.points[1] = Vector2(1000,0);
 	

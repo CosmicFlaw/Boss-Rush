@@ -189,7 +189,7 @@ func _physics_process(_delta):
 		$HurtBox/CollisionShape2D.disabled = true;
 	
 	if Input.is_action_just_pressed("shoot"):
-		Global.instance_create(get_parent(), Vector2(global_position.x, global_position.y - 12), direction, projectile);
+		Global.instance_shoot(get_parent(), Vector2(global_position.x, global_position.y - 12), direction, projectile);
 
 #---------------------------MOVEMENT FUNCTION----------------------------------#
 
